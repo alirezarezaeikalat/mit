@@ -45,10 +45,11 @@
       b. --non scalar objects-- : can be subdivided
 
 
-[ATTENTION] [VERY IMPORTANT]
+[ATTENTION] [VERY IMPORTANT] [This is true for non mutable objects]
 in python everything is a object, so for example when you have (radius = 2) radius is a object, and if you assign a new value to radius
 like (radius = 3) you actually gives new address for radius pointer, and you lost the handle for 2 in the memory, but 2 is still in 
 memory, and in some time, garbage collector will collect this 2 value in the memory that has no handle.
+
 
 6. using , in print function add space between separate inputs
 
@@ -355,9 +356,9 @@ If you don't specify the return type, python will make it for you, it is NoneTyp
                   if n == 1:
                         print_move(from, to)
                   else:
-                        tower(n-1, from, spare, to)
-                        tower(1, from, to, spare)
-                        tower(n-1, spare, to, from)
+                        towers(n-1, from, spare, to)
+                        towers(1, from, to, spare)
+                        towers(n-1, spare, to, from)
       
       example 4: 
       at first there are two rabits, the female, and the male, and after a month the rabits will gets mature, and the female rabit will
@@ -1087,3 +1088,29 @@ but if you import the module to another python file, the __name__ variable in im
                   .
                   .
 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+43. Last but not least:
+
+      computational thinking is all about:
+
+            abstraction      algorithms        and automation
+
+
+44. Things that I've learned from working with python:
+
+      a. you can change the setting of vs code, using interface or setting.json file. you can set User setting or 
+            workspace setting, There is option that if you make it true you can see default settings beside user setting:
+            
+             "workbench.settings.useSplitJSON": true,
+      
+      b. you can choose your python interpreter bellow the vs code.
+
+      c. you can findout which python or pip you are running by using:
+
+            which python      or which pip
+
+            [ATTENTION]
+            but if you are using alias, you have to use:
+
+            type python (to find the alias, then use type <alias>)
+            
