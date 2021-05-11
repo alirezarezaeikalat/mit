@@ -1113,4 +1113,5 @@ but if you import the module to another python file, the __name__ variable in im
             but if you are using alias, you have to use:
 
             type python (to find the alias, then use type <alias>)
-            
+      
+      d. python 

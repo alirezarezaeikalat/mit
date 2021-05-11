@@ -60,8 +60,10 @@ def is_word_guessed(secret_word, letters_guessed):
     returns: boolean, True if all the letters of secret_word are in letters_guessed;
       False otherwise
     '''
-    # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
+    is_guessed = [l in letters_guessed for l in secret_word]
+    
+    return all(is_guessed)
+
 
 
 
@@ -72,8 +74,14 @@ def get_guessed_word(secret_word, letters_guessed):
     returns: string, comprised of letters, underscores (_), and spaces that represents
       which letters in secret_word have been guessed so far.
     '''
-    # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
+    guessed_word = ''
+    for l in secret_word:
+        if l in letters_guessed:
+          guessed_word += l
+        else:
+          guessed_word += '_'
+    print(guessed_word) 
+
 
 
 
@@ -84,9 +92,10 @@ def get_available_letters(letters_guessed):
       yet been guessed.
     '''
     # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
+    available_letters = [l for l in string.ascii_lowercase if l not in letters_guessed]    
+    return ''.join(available_letters)
     
-    
+
 
 def hangman(secret_word):
     '''
