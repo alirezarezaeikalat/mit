@@ -798,7 +798,8 @@ but if you import the module to another python file, the __name__ variable in im
       This example takes linear time O(n), but there is hidden assumption in this, and this hidden assumption is that, retrieving data
       from a list takes constant time.
 
-      if you have list of integer, all the spaces are the same amount, and you can get to the any element in constant time, but what if
+      [VERY IMPORTANT]
+      If you have list of integer, all the spaces are the same amount, and you can get to the any element in constant time, but what if
       you have list that are hetrogenous, but python in the list, doesn't store the actual value, it stores the pointer to the memory
       that stores that actual value, so even in hetrogenous list, we can retrieve data in constant time.
 
@@ -938,7 +939,7 @@ but if you import the module to another python file, the __name__ variable in im
                   smaller = genSubsets(L[:-1])  # this will call itself n times
                   extra = L[-1:]  # this is constant        
                   new = []          # this is constant
-                  for small in smaller:               # time of the problem is to solve smaller problem + time to make a compy of smaller
+                  for small in smaller:               # time of the problem is to solve smaller problem + time to make a copy of smaller
                                                                                                             solution (this is exponentialy)
                                                                                                             2^k
                         new.append(small+extra) # this is constant
@@ -992,7 +993,6 @@ but if you import the module to another python file, the __name__ variable in im
             in this sort, you go through the list, and takes the bigger element to the end of list in turn:
 
             def bubble_sort(L):
-
                   swap = false
                   while not swap:
                         swap = true

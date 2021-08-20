@@ -32,8 +32,8 @@
     newGreet = greet.upper()
     newListGreet = greet.split(",")
 
-11. list is just like arrays in other languages, tuples are the immutable of list, and we use () instead of []
-        , set are just like list but onordered and without duplicate, we use {} for set:
+11. list is just like arrays in other languages, tuples are the immutable of list, and we use () instead of [],
+        set are just like list but onordered and without duplicate, we use {} for set:
 
     we can get certain elements:
 

@@ -16,6 +16,14 @@ portion_saved = (low + high) // 2
 num_guesses = 0
 
 #print(portion_down_payment, 'portion')
+for i in range(1, month_to_buy + 1):
+    current_saving = current_saving + current_saving * (0.04 / 12) + monthly_salary * 1
+    if i % 6 == 0:
+       monthly_salary += monthly_salary * semi_annual_raise
+
+if current_saving < portion_down_payment:
+    print('It is not possible to pay the down payment in three years')
+    exit()
 
 while abs(current_saving - portion_down_payment) > 100:
   current_saving = 0
@@ -24,7 +32,6 @@ while abs(current_saving - portion_down_payment) > 100:
     current_saving = current_saving + current_saving * (0.04 / 12) + monthly_salary * (portion_saved / 10000)
     if i % 6 == 0:
        monthly_salary += monthly_salary * semi_annual_raise
-  print(current_saving)
   if current_saving - portion_down_payment > 100:
     high = portion_saved
   else:

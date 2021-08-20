@@ -11,7 +11,6 @@ monthly_saved = monthly_salary * portion_saved
 
 while current_saving < portion_down_payment:
    current_saving = current_saving + current_saving * (0.04 / 12) + monthly_saved
-   print(current_saving)
    month_to_buy += 1
 
 print(month_to_buy)
