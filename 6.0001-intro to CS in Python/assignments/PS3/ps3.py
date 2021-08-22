@@ -91,7 +91,7 @@ def get_word_score(word, n):
     n: int >= 0
     returns: int >= 0
     """
-    word = str.lower(word)
+    word = word.lower()
     firstComponent = 0
     for l in word:
         firstComponent += SCRABBLE_LETTER_VALUES.get(l, 0)
@@ -142,6 +142,9 @@ def deal_hand(n):
     num_vowels = int(math.ceil(n / 3))
 
     for i in range(num_vowels):
+        if i == num_vowels - 1:
+            hand['*'] = 1
+            break
         x = random.choice(VOWELS)
         hand[x] = hand.get(x, 0) + 1
     
@@ -172,7 +175,8 @@ def update_hand(hand, word):
     hand: dictionary (string -> int)    
     returns: dictionary (string -> int)
     """
-    word = str.lower(word)
+    word = word.lower()
+    # because the 
     newHand = hand.copy()
     for l in word:
         if l in newHand.keys():
@@ -195,8 +199,36 @@ def is_valid_word(word, hand, word_list):
     word_list: list of lowercase strings
     returns: boolean
     """
-
-    pass  # TO DO... Remove this line when you implement this function
+    word = word.lower()
+    star_location = word.find('*')
+    if star_location > 0: 
+        word_with_no_star = word[:star_location] + word[star_location + 1 :]
+        possible_words = []
+        for v in VOWELS:
+            w = word[:star_location] + v + word[star_location + 1 :]
+            possible_words.append(w)
+        in_word_list = [word in word_list for word in possible_words]
+        if not any(in_word_list):
+            return False
+            
+        word_hand = get_frequency_dict(word_with_no_star)
+        for key, value in word_hand.items():
+            if hand.get(key, 0) == 0 or value > hand.get(key, 0):
+                return False
+        
+        return True
+    else:
+        if word not in word_list:
+            return False        
+        word_hand = get_frequency_dict(word)
+        for key, value in word_hand.items():
+            if hand.get(key, 0) == 0 or value > hand.get(key, 0):
+                return False
+        return True
+            
+        
+    
+    
 
 #
 # Problem #5: Playing a hand
@@ -208,8 +240,10 @@ def calculate_handlen(hand):
     hand: dictionary (string-> int)
     returns: integer
     """
-    
-    pass  # TO DO... Remove this line when you implement this function
+    handlen = 0
+    for key, value in hand.items():
+        handlen += value
+    return handlen
 
 def play_hand(hand, word_list):
 
@@ -244,30 +278,36 @@ def play_hand(hand, word_list):
     
     # BEGIN PSEUDOCODE <-- Remove this comment when you implement this function
     # Keep track of the total score
-    
+    total_score = 0
     # As long as there are still letters left in the hand:
-    
+    while calculate_handlen(hand) > 0:
         # Display the hand
-        
+        print("Current Hand: "), display_hand(hand)
         # Ask user for input
+        word = input('Enter word, or "!!" to indicate that you are finished: ')
         
         # If the input is two exclamation points:
-        
-            # End the game (break out of the loop)
-
-            
+        if word == '!!':
+            # End the game (break out of the loop)        
+            break
         # Otherwise (the input is not two exclamation points):
-
+        else:
             # If the word is valid:
-
+            if is_valid_word(word, hand, word_list):
                 # Tell the user how many points the word earned,
+                total_score += get_word_score(word, len(word))
+                print(word, " earned ", get_word_score(word, len(word)), " points.", " Total: ", total_score, " points")
                 # and the updated total score
 
             # Otherwise (the word is not valid):
+            else:
                 # Reject invalid word (print a message)
+                print("That is not a valid word. Please choose another word")
+                hand = update_hand(hand, word)
                 
             # update the user's hand by removing the letters of their inputted word
-            
+    if calculate_handlen(hand) == 0:
+        
 
     # Game is over (user entered '!!' or ran out of letters),
     # so tell user the total score
@@ -353,4 +393,5 @@ def play_game(word_list):
 #
 if __name__ == '__main__':
     word_list = load_words()
-    play_game(word_list)
+    #play_game(word_list)
+    #display_hand(deal_hand(15)) 

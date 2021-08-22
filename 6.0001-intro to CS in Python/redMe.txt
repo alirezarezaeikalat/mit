@@ -1121,3 +1121,9 @@ but if you import the module to another python file, the __name__ variable in im
 
             import string
             print(string.ascii_lowercase)  // this returns all the lowercase letters
+
+45. Working with dictionaries in python: 
+
+      a. you can use get function with a dictionary to get a value for a certain key in dictionary.
+
+            sampleDic.get(key, defaultValue)          if you don't specify the default value, it will retrun None
