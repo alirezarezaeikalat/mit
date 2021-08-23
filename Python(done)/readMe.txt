@@ -404,7 +404,7 @@ deleter:
 
         nums = [1, 2, 3, 4, 5]
 
-        print(list(map(lambda: n: n*n, nums)))
+        print(list(map(lambda n: n*n, nums)))
 
 57. decoraters are the way to give additional behaviors to functions:
 
