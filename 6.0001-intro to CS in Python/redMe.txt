@@ -1127,3 +1127,28 @@ but if you import the module to another python file, the __name__ variable in im
       a. you can use get function with a dictionary to get a value for a certain key in dictionary.
 
             sampleDic.get(key, defaultValue)          if you don't specify the default value, it will retrun None
+
+
+--------------- Very important concept in python and in OS -----------
+
+46. you can see the folders that your terminal commands looks for executable binaries:
+
+      >> echo $PATH
+
+47. First you can see the actual python and pip you are using, This even shows aliases:
+
+      >> type python
+      
+      >> type pip
+
+48. you can run python and see the places that this version of python looking for importing 
+      import sys
+      print(sys.path)
+
+49. you can see your install packages: 
+      
+      >> pip list
+
+      then you can use one of the packages to see the location where pip install its packages:
+      
+      >> pip show <packagename>

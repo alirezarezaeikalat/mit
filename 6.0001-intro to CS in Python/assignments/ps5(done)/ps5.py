@@ -1,5 +1,5 @@
 # 6.0001/6.00 Problem Set 5 - RSS Feed Filter
-# Name:
+# Name: Alireza Rezaei Kalat
 # Collaborators:
 # Time:
 
@@ -11,6 +11,7 @@ from project_util import translate_html
 from mtTkinter import *
 from datetime import datetime
 import pytz
+from datetime import timedelta
 
 
 #-----------------------------------------------------------------------
@@ -55,12 +56,41 @@ def process(url):
 # Problem 1
 
 # TODO: NewsStory
+class NewsStory:
+    def __init__(self, guid, title, description, link, pubdate):
+        """
+        globally unique identifier (GUID) - a string
+        title - a string
+        description - a string
+        link to more content - a string
+        pubdate - a ​datetime
+        """
+        self.guid = guid
+        self.title = title
+        self.description = description
+        self.link = link
+        self.pubdate = pubdate
+    
+    def get_guid(self):
+        return self.guid
 
+    def get_title(self):
+        return self.title
+
+    def get_description(self):
+        return self.description
+
+    def get_link(self):
+        return self.link
+
+    def get_pubdate(self):
+        return self.pubdate
 
 #======================
 # Triggers
 #======================
 
+# This way of using inheritance is not correct, we should use Strategy pattern
 class Trigger(object):
     def evaluate(self, story):
         """
@@ -74,12 +104,53 @@ class Trigger(object):
 
 # Problem 2
 # TODO: PhraseTrigger
+class PhraseTrigger(Trigger):
+    
+    def __init__(self, phrase):
+        """
+        phrase -> is a string
+        """
+        self.phrase = phrase
+    
+    def get_phrase(self):
+        return self.phrase
+    
+    def is_phrase_in(self, text):
+        phrase = self.get_phrase().lower()
+        phrase_words = phrase.split(" ")
+        text = text.lower()
+        for l in text:
+            if l in string.punctuation:
+                text = text.replace(l, " ")
+        words = text.split(" ")
+        valid_words = [word for word in words if len(word) > 0]
+        is_in_text = []
+        for word in phrase_words:
+            is_in_text.append(word in valid_words)
+        text = " ".join(valid_words)
+        
+        return phrase in text and all(is_in_text)
 
 # Problem 3
 # TODO: TitleTrigger
+class TitleTrigger(PhraseTrigger):
+    def __init__(self, phrase):
+        super().__init__(phrase)
+    
+    def evaluate(self, story):
+        title = story.get_title()
+        return self.is_phrase_in(title)
 
 # Problem 4
 # TODO: DescriptionTrigger
+class DescriptionTrigger(PhraseTrigger):
+    def __init__(self, phrase):
+        super().__init__(phrase)
+    
+    def evaluate(self, story):
+        description = story.get_description()
+        return self.is_phrase_in(description)
+        
 
 # TIME TRIGGERS
 
@@ -88,22 +159,57 @@ class Trigger(object):
 # Constructor:
 #        Input: Time has to be in EST and in the format of "%d %b %Y %H:%M:%S".
 #        Convert time from string to a datetime before saving it as an attribute.
-
+class TimeTrigger(Trigger):
+    def __init__(self, time):
+        """
+        Input: Time has to be in EST and in the format of "%d %b %Y %H:%M:%S".
+        Convert time from string to a datetime before saving it as an attribute.
+        """
+        self.time = datetime.strptime(time, "%d %b %Y %H:%M:%S")
 # Problem 6
 # TODO: BeforeTrigger and AfterTrigger
+class BeforeTrigger(TimeTrigger):
+    def __init__(self, time):
+        super().__init__(time)
+    
+    def evaluate(self, story):
+        return story.get_pubdate().replace(tzinfo=None) < self.time
 
-
+class AfterTrigger(TimeTrigger):
+    def __init__(self, time):
+        super().__init__(time)
+    
+    def evaluate(self, story):
+        return story.get_pubdate().replace(tzinfo=None) > self.time
 # COMPOSITE TRIGGERS
 
 # Problem 7
 # TODO: NotTrigger
-
+class NotTrigger(Trigger):
+    def __init__(self, trigger):
+        self.trigger = trigger
+    
+    def evaluate(self, story):
+        return not self.trigger.evaluate(story)
+        
 # Problem 8
 # TODO: AndTrigger
-
+class AndTrigger(Trigger):
+    def __init__(self, trigger1, trigger2):
+        self.trigger1 = trigger1
+        self.trigger2 = trigger2
+    
+    def evaluate(self, story):
+        return self.trigger1.evaluate(story) and self.trigger2.evaluate(story)
 # Problem 9
 # TODO: OrTrigger
-
+class OrTrigger(Trigger):
+    def __init__(self, trigger1, trigger2):
+        self.trigger1 = trigger1
+        self.trigger2 = trigger2
+    
+    def evaluate(self, story):
+        return self.trigger1.evaluate(story) or self.trigger2.evaluate(story)
 
 #======================
 # Filtering
@@ -117,9 +223,14 @@ def filter_stories(stories, triggerlist):
     Returns: a list of only the stories for which a trigger in triggerlist fires.
     """
     # TODO: Problem 10
-    # This is a placeholder
-    # (we're just returning all the stories, with no filtering)
-    return stories
+    filter_stories = []
+    for story in stories:
+        for trigger in triggerlist:
+            if trigger.evaluate(story):
+                filter_stories.append(story)
+                break
+    
+    return filter_stories
 
 
 
@@ -222,4 +333,4 @@ if __name__ == '__main__':
     t = threading.Thread(target=main_thread, args=(root,))
     t.start()
     root.mainloop()
-
+    

@@ -28,6 +28,7 @@ def buildMenu(names, values, calories):
 def greedy(items, maxCost, keyFunction):
     """Assumes items a list, maxCost >= 0,
          keyFunction maps elements of items to numbers"""
+    # We use sorted to generate new list
     itemsCopy = sorted(items, key = keyFunction,
                        reverse = True)
     result = []
